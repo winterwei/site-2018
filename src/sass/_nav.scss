@@ -1,0 +1,134 @@
+.sidebar {
+  // display: flex;
+  width: 218px;
+  position: absolute;
+  left:-218px;
+  bottom: 0;
+  top:0;
+      opacity: 0;
+    visibility: hidden;
+    transform: translateX(-100%);
+    transition: all .3s ease-in-out;
+    transition-delay: .3s;
+    flex-shrink: 0;
+    ul.main-nav {
+      li {
+            opacity: 0;
+    visibility: hidden;
+    transform: translateX(-100%);
+    transition: all .3s ease-in-out;
+    @for $i from 1 through 4 {
+      &:nth-child(#{$i}) {
+        transition-delay: 0.08s * $i;
+      } 
+    }
+      }
+    }
+
+  // left: 218px;
+  @media (max-width: 814px) {
+    // position: absolute;
+    // left: -218px;
+
+  }
+
+}
+
+.show {
+  // position: absolute;
+  // top: 0;
+  // left: 0;
+  // bottom: 0;
+  left:0; 
+    flex: 0 0 192px;
+      background-color: $dark-blue;
+  
+  transform: translateX(0%);
+  transition: all .3s ease;
+  opacity: 1;
+  visibility: visible;
+  ul.main-nav {
+    li {
+      transform: translateX(0%);
+      transition: all .3s ease-in-out;
+      opacity: 1;
+      visibility: visible;
+      @for $i from 1 through 4 {
+      &:nth-child(#{$i}) {
+        transition-delay: 0.08s * $i;
+      } 
+    }
+    }
+  }
+}
+
+.menu-avatar {
+  img {
+    width: 120px;
+  }
+  display: flex;
+  justify-content: center;
+  padding: 48px 0 24px;
+}
+
+
+ul {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+
+}
+
+ul.main-nav {
+  li {
+    display: flex;
+    flex-direction: column;
+    font-weight: bold;
+  
+
+
+    a {
+        padding: 18px 24px;
+        display: flex;
+        align-items: center;
+        color: $blue-lite;
+        &.active {
+          font-weight: bold;
+          color: $pink;
+}
+        &:hover {
+          color: $pink;
+        }
+        i {
+          padding-right: 16px;
+        }
+    }
+  }
+}
+
+ul.sub-nav {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  li {
+    padding: 0;
+    display: flex;
+    font-weight: normal;
+    a {
+        padding: 12px 24px;
+    }
+  }
+}
+
+li {
+  list-style: none;
+}
+
+
+.bgc {
+    background-color: $red;
+    color: white;
+    padding: 24px 36px;
+    font-weight: bold; 
+}
