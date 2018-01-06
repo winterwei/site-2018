@@ -16,7 +16,7 @@ p {
 }
 
 .main-left {
-    flex: 1 0 50%;
+    width:50%;
     display: flex;
     flex-direction: column;
     height: 100%
@@ -58,7 +58,10 @@ nav {
 }
 
 .image-wrapper {
-    position:relative;
+    position: absolute;
+    top:0;
+    bottom:0;
+    right:0;
     background: #222244;
     transition: 1s ease-in-out;
     &.project1 {
@@ -72,12 +75,13 @@ nav {
     }
     overflow: hidden;
     clip-path: url(#bubblePath);
-    left: 0;
-    right: 0;
     img {
         width: 700px;
         padding-top:200px;
     }
-    height: 100%px;
+    height: 100%;
 }
 
+svg {
+    transition: 1s ease-in-out;
+}

@@ -1,6 +1,6 @@
 (ns winter-website.home
   (:require
-    [clojure.string :as string]
+    [cljsjs.snapsvg]
     [reagent.core :as r]
     [reagent.ratom :as ratom]
     [reagent.session :as session]
@@ -61,11 +61,24 @@
   [height section]
   (str "translate3d(0px," (* (- height) (dec section)) "px,0px)"))
 
+(def defaults
+  {:section 1
+   :in-animation? false
+   :allow-scroll? true
+   :article nil})
+
+(defn morph!
+  [id attrs & [ts]]
+  (-> js/Snap
+      (.select id)
+      (.animate (clj->js attrs) (or ts 2000) (.-easeinout js/mina))))
+
 (defn home
   []
-  (let [data      (r/atom {:section 1, :in-animation? false, :allow-scroll? true})
+  (let [data      (r/atom defaults)
         section   (ratom/reaction (:section @data))
         height    (ratom/reaction (:project-height @data))
+        article   (ratom/reaction (:article @data))
         wheel-fn  (wheel-handler-fn data)
         resize-fn (resize-handler-fn data)]
     (r/create-class
@@ -74,7 +87,8 @@
          ;; On creation, we invoke a resize event to set initial parameters.
          (resize-fn)
          (dommy/listen! js/window :wheel wheel-fn)
-         (dommy/listen! js/window :resize resize-fn))
+         (dommy/listen! js/window :resize resize-fn)
+         (morph! "#bubblePath" {:transform "scale(0.95,0.95) translate(0,-180)"} 0))
        :reagent-render
        (fn []
          [:div.wrapper
@@ -98,7 +112,12 @@
                [:p "Desining the experience of teaching an AI what key clauses look like in contracts for domain experts by providing a highly interactive interface where reading, evaluating results, annotating texts, and training are easy and intuitive."]
                ]
               [:div.button-wrapper
-               [:a.buton {:href ""} "Read Case Study"]]
+               [:a.button {:href ""
+                           :on-click (fn [_]
+                                       (swap! data assoc :article 1)
+                                       #_(morph! "#bubblePath" {:transform "scale(0.95,0.95) translate(0,-180)"})
+                                       (morph! "#bubblePath" {:transform "scale(1.5,1.5) translate(0,-180)"}))}
+                "Read Case Study"]]
               ]
              [:div.copy {:style {:height @height}}
               [:div.text
@@ -106,7 +125,7 @@
                [:p "Desining the experience of teaching an AI what key clauses look like in contracts for domain experts by providing a highly interactive interface where reading, evaluating results, annotating texts, and training are easy and intuitive."]
                ]
               [:div.button-wrapper
-               [:a.buton {:href ""} "Read Case Study"]]
+               [:a.button {:href ""} "Read Case Study"]]
               ]
              [:div#project3.copy {:style {:height @height}}
               [:div.text
@@ -114,7 +133,7 @@
                [:p "Desining the experience of teaching an AI what key clauses look like in contracts for domain experts by providing a highly interactive interface where reading, evaluating results, annotating texts, and training are easy and intuitive."]
                ]
               [:div.button-wrapper
-               [:a.buton {:href ""} "Read Case Study"]]
+               [:a.button {:href ""} "Read Case Study"]]
               ]
              [:div#project4.copy {:style {:height @height}}
               [:div.text
@@ -122,13 +141,15 @@
                [:p "Desining the experience of teaching an AI what key clauses look like in contracts for domain experts by providing a highly interactive interface where reading, evaluating results, annotating texts, and training are easy and intuitive."]
                ]
               [:div.button-wrapper
-               [:a.buton {:href ""} "Read Case Study"]]
+               [:a.button {:href ""} "Read Case Study"]]
               ]]]]
 
-          [:div.image-wrapper {:class (str "project" @section)}
+          [:div.image-wrapper {:class (str "project" @section)
+                               :style {:left (if @article "0" "50%")}}
            [:img {:src "img/doc-viewer-screen.png"}]]
+
           [:svg {:width "0%" :height "0%"}
            [:defs
-            [:clipPath {:id "bubblePath" :transform "scale(0.95,0.95) translate(0,-180)"}
+            [:clipPath {:id "bubblePath"}
              [:path {:d "M874.82438,409.605553 C877.675243,542.374587 845.870573,640.169688 775.515049,717.972342 C694.184131,807.912655 518.680572,841.319057 437.349654,835.323036 C222.088118,819.450713 52.0465713,678.432867 31.55118,559.506075 C10.1483069,435.302786 55.5223979,365.920258 84.6303053,247.712989 C109.6203,146.243184 171.637265,68.6889369 306.364071,23.290493 C392.831678,-5.83303706 582.889191,-31.5302695 713.874774,102.951913 C788.151305,179.229865 871.39992,250.282712 874.82438,409.605553 Z"}]]]]
           ])})))
