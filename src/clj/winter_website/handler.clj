@@ -23,7 +23,7 @@
    [:link {:href "https://fonts.googleapis.com/icon?family=Material+Icons"
            :rel "stylesheet"}]
 
-   (include-js "https://use.typekit.net/vjr3txl.js")
+   (include-css "https://use.typekit.net/frj5jml.css")
    [:script "try{Typekit.load({ async: true });}catch(e){}"]
    (include-css (if (env :dev) "/css/site.css" "/css/site.min.css"))
 

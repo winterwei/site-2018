@@ -1,0 +1,258 @@
+@import 'normalize';
+@import 'base';
+@import 'nav';
+@import 'main';
+@import 'about';
+@import 'placeholder';
+
+
+
+.container {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+
+}
+
+#app {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+
+.menu-icon {
+  position: absolute;
+  right: 24px;
+  top: 24px;
+  cursor: pointer;
+  i {
+    color: $violet;
+    &:hover {
+      color: $red;
+    }
+  }
+}
+
+
+.page-wrapper {
+  display: flex;
+  width: 100%;
+
+}
+
+.page-left{
+  @media (min-width: 824px) {
+    flex: 2 1 240px;
+    justify-content: space-around;
+  }
+
+  display: flex;
+  background-color: $forget-me-not;
+}
+
+.page-left__center {
+  display: flex;
+  flex-direction: column;
+  @media (min-width: 824px) {
+    justify-content: center;
+  }
+}
+
+.avatar {
+  width: 360px;
+  margin-left: -10px;
+  padding-bottom: 72px;
+  @media (max-width: 1009px) {
+    width: 240px;
+  }
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.title {
+  margin-bottom: 12px;
+}
+
+@media (max-width: 824px) {
+  .page-wrapper {
+    flex-direction: column;
+  }
+  .page-left {
+    justify-content: space-between;
+  }
+  .page-left__center {
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+  }
+  .avatar {
+    width: 120px;
+    padding: 24px 36px 24px 24px;
+    margin-left: 3%;
+    flex: 1 1 auto;
+  }
+  .intro {
+    text-align: left;
+    flex: 4 1 auto;
+  }
+}
+
+
+
+.page-right {
+  flex: 1 2 560px;
+  display: flex;
+ justify-content: space-between;
+  @media (max-width: 764px) {
+    width: 100%;
+  }
+}
+
+.page-right__center {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.chat {
+  padding: 24px 48px 0;
+  @media (max-width: 764px) {
+    padding: 24px;
+  }
+}
+
+.message-block {
+  margin-bottom: 24px;
+}
+
+.message-block-left {
+  max-width: 360px;
+
+}
+
+.message-block-right {
+    display: flex;
+    justify-content: flex-end;
+  align-self: flex-end;
+animation: bounceInUp .4s ease-in-out 3.6s both;
+}
+
+.message {
+  display: inline-block;
+  margin: 6px 0 0;
+  padding: 24px 32px;
+  border-radius: 12px;
+  @for $i from 1 through 3 {
+    &:nth-child(#{$i}) {
+        animation: bounceInUp .4s ease-in-out (.6s * $i + 0.5s) both;
+      }
+    }
+}
+
+.message-winter {
+  background-color: $dark-blue;
+  color: white;
+}
+
+.message-guest {
+  padding: 0;
+
+}
+
+button {
+  border: none;
+  background-color: transparent;
+  font-family: $heading;
+  padding: 0;
+}
+
+// button
+.button_message {
+  border: 1px solid $lilac;
+  border-radius: 48px;
+  background-color: white;
+  padding: 12px 24px;
+  color: $violet;
+  cursor: pointer;
+  font-family: $heading;
+  font-size: 1em;
+  &:hover {
+    border: 1px solid $violet;
+  }
+}
+
+.type {
+  box-shadow: 1px -1px 8px rgba(0,0,0,.05);
+  display: flex;
+  // padding: 24px 48px;
+  @media (max-width: 764px) {
+    padding: 0 24px;
+  }
+  justify-content: space-between;
+  input {
+    border: none;
+    outline: none;
+    flex: 3 1 70%;
+    height: 24px;
+    padding: 24px;
+    font-family: $heading;
+    &:focus {
+      outline: none;
+    }
+  }
+  input::-webkit-input-placeholder {
+    color: $lilac;
+  }
+  [placeholder]:focus::-webkit-input-placeholder {
+    transition: opacity 0.1s ease-in;
+    opacity: 0;
+  }
+}
+
+button.cta {
+  color: $red;
+  font-weight: bold;
+  padding: 24px;
+  cursor: pointer;
+  &:hover:enabled {
+    background-color: $red;
+    color: white;
+  }
+  &:disabled {
+    color: #ddd;
+    cursor: default;
+  }
+}
+
+
+@keyframes bounceInUp {
+    0%, 30%, 60%, 75%, 85%, 93%, 100% {
+        transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+    }
+    0% {
+        opacity: 0;
+        transform: translate3d(0, 100%, 0);
+    }
+      30% {
+        opacity: 1;
+        transform: scaleY(1.1);
+    }
+      // 40% {
+      //   transform: scaleY(1.05) translate3d(0,0,0);
+      // }
+    60% {
+        transform: scaleY(1.03) translate3d(0, -2px, 0);
+    }
+    75% {
+        transform: scaleY(.98) translate3d(0, 2px, 0);
+    }
+    100% {
+        transform: none;
+    }
+}
+

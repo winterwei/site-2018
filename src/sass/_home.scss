@@ -1,0 +1,83 @@
+#app, .wrapper {
+    height:100%;
+}
+h1 {
+    font-size: 4.5em;
+    line-height: 1.2;
+}
+p {
+    font-size: 1em;
+    line-height: 1.5;
+}
+
+.wrapper {
+    display: flex;
+    width: 100%;
+}
+
+.main-left {
+    flex: 1 0 50%;
+    display: flex;
+    flex-direction: column;
+    height: 100%
+
+   ::-webkit-scrollbar {
+        display:none;
+    }
+}
+
+
+.copy {
+box-sizing: border-box;
+    padding: 48px;
+}
+
+nav {
+    flex: 0 0 auto;
+    
+    ul {
+        display: flex;
+        flex-direction: row;
+        list-style: none;
+        li {
+            padding: 0;
+            a {
+                padding: 0 12px;
+            }
+        }
+    }
+}
+
+#projects {
+    flex: 1 1 auto;
+    overflow:hidden;
+}
+
+.autoscroll {
+    transition: 1s ease-in-out;
+}
+
+.image-wrapper {
+    position:relative;
+    background: #222244;
+    transition: 1s ease-in-out;
+    &.project1 {
+        background: #222244;
+    }
+    &.project2 {
+        background: #ffffff;
+    }
+    &.project3 {
+        background: #224422;
+    }
+    overflow: hidden;
+    clip-path: url(#bubblePath);
+    left: 0;
+    right: 0;
+    img {
+        width: 700px;
+        padding-top:200px;
+    }
+    height: 100%px;
+}
+

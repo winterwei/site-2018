@@ -12,6 +12,8 @@
     [winter-website.contact :as contact]
     [winter-website.placeholder :as placeholder]))
 
+(enable-console-print!)
+
 (defn app []
   (let [page (session/get :page)]
     [:div.container
@@ -54,7 +56,7 @@
 ;; Initialize app
 
 (defn mount-root []
-  (reagent/render [placeholder/page] (.getElementById js/document "app")))
+  (reagent/render [current-page] (.getElementById js/document "app")))
 
 (defn init! []
   (accountant/configure-navigation!

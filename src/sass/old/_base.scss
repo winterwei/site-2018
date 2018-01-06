@@ -27,7 +27,8 @@ $h3: 1em;
 $h4: .75em;
 $p: 1em;
 
-$text: "gitan-latin";
+$heading: 'adelle-sans';
+$body: 'adelle';
 
 @mixin type($ff, $fz, $lh, $fw) {
     font-family: $ff;
@@ -62,34 +63,34 @@ p {
     margin: 0;
     color: $grey;
     &.msg {
-        font-family: $text;
+        font-family: $heading;
         color: white;
     }
 }
 
 h1 {
-    @include type($text, $h1, 1, bold);
+    @include type($heading, $h1, 1, bold);
 }
 
-// h2 {
-//     @include type($heading, $h2, 1, bold);
-// }
+h2 {
+    @include type($heading, $h2, 1, bold);
+}
 
-// h3 {
-//     @include type($heading, $h3, 1.5, bold);
-// }
+h3 {
+    @include type($heading, $h3, 1.5, bold);
+}
 
-// h4 {
-//     @include type($heading, $h4, 1, bold);
-// }
+h4 {
+    @include type($heading, $h4, 1, bold);
+}
 
-// p {
-//     @include type($body, $p, 1.5, normal);
-// }
+p {
+    @include type($body, $p, 1.5, normal);
+}
 
-// a {
-//     @include type($heading, $p, 1, normal);
-// }
+a {
+    @include type($heading, $p, 1, normal);
+}
 
 
 

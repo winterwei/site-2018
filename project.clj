@@ -95,13 +95,14 @@
                                   [figwheel-sidecar "0.5.14"]
                                   [org.clojure/tools.nrepl "0.2.13"]
                                   [pjstadig/humane-test-output "0.8.3"]
+                                  [prismatic/dommy "1.1.0"]
                                   [prone "1.1.4"]
                                   [ring/ring-mock "0.3.2"]
                                   [ring/ring-devel "1.6.3"]]
 
                    :source-paths ["env/dev/clj"]
                    :plugins [[lein-auto "0.1.3"]
-                             [lein-figwheel "0.5.11"]
+                             [lein-figwheel "0.5.14"]
                              [lein-sassc "0.10.4"]]
 
                    :auto {"sassc" {:paths ["src/sass"]

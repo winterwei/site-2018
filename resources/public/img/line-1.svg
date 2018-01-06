@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="835px" height="822px" viewBox="0 0 835 822" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Shape</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="56273.0023%" y1="26745.9004%" x2="41362.4259%" y2="111950%" id="linearGradient-1">
+            <stop stop-color="#43445C" offset="0%"></stop>
+            <stop stop-color="#A2706D" offset="100%"></stop>
+            <stop stop-color="#FFFFFF" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Desktop-HD-Copy-22" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-129.000000, -112.000000)">
+        <g id="Asset-2" transform="translate(130.000000, 105.000000)" stroke="url(#linearGradient-1)">
+            <path d="M832.82769,409.766212 C835.624826,539.994212 804.419538,635.917636 735.389913,712.231244 C655.591733,800.450212 483.395661,833.217257 403.597481,827.335993 C192.3843,811.767445 25.5389058,673.448506 5.44656416,556.797825 C-15.5529568,434.971632 28.9660276,366.917 57.5253761,250.972071 C82.0444168,151.444272 142.892629,75.3743161 275.080413,30.8447419 C359.918478,2.27860001 546.394224,-22.9268193 674.911292,108.981542 C747.78803,183.799628 829.467766,253.492613 832.82769,409.766212 Z" id="Shape" style="mix-blend-mode: multiply;"></path>
+        </g>
+    </g>
+</svg>
