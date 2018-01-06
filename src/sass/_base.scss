@@ -19,18 +19,17 @@ $dark-purple: #303266;
 $darkpurple: #2D3162;
 $gun-powder: #43445B;
 
+$black: #000102;
 
 $base-font-size: 1em;
-$h1: 2.25em;
-$h2: 1.5em;
-$h3: 1em;
-$h4: .75em;
-$p: 1em;
+$h1: 4.5em;
+$h2: 2.25em;
+$p: 1.5em;
 
 $text: "gitan-latin";
 
-@mixin type($ff, $fz, $lh, $fw) {
-    font-family: $ff;
+@mixin type($fz, $lh, $fw) {
+    font-family: $text;
     font-size: $fz;
     line-height: $lh;
     font-weight: $fw;
@@ -43,49 +42,49 @@ body {
 
 
 body {
-//   font-family: $heading;
+  font-family: $text;
   -webkit-font-smoothing: antialiased;
-//   font-size: $base-font-size;s
-//   line-height: 1.5em;
+  font-size: $base-font-size;
 }
 
 
-h1, h2, h3, h4{
-    margin: 0;
+h1, h2, h3, h4, p{
+    margin: 0 0 36px;
     padding: 0;
     // color: $dark-blue;
     color: $gun-powder;
 }
 
-p {
-    padding: 0;
-    margin: 0;
-    color: $grey;
-    &.msg {
-        font-family: $text;
-        color: white;
+
+
+
+
+h1 {
+    line-height: 1.13;
+    font-weight: bold;
+    @media (min-width: 375px) {
+        font-size: 3em;
+    }
+    @media (min-width: 720px) {
+        font-size: 4.5em;
     }
 }
 
-h1 {
-    @include type($text, $h1, 1, bold);
+h2 {
+    @include type($h2, 1, bold);
 }
 
-// h2 {
-//     @include type($heading, $h2, 1, bold);
-// }
+p {
+    line-height: 1.5;
+    font-weight: normal;
 
-// h3 {
-//     @include type($heading, $h3, 1.5, bold);
-// }
-
-// h4 {
-//     @include type($heading, $h4, 1, bold);
-// }
-
-// p {
-//     @include type($body, $p, 1.5, normal);
-// }
+    @media (min-width: 375px) {
+        font-size: 1em;
+    }
+    @media (min-width: 720px) {
+        font-size: 1.5em;
+    }
+}
 
 // a {
 //     @include type($heading, $p, 1, normal);
