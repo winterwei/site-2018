@@ -7,6 +7,30 @@
     [accountant.core :as accountant]
     [dommy.core :as dommy :refer-macros [by-id sel]]))
 
+;; Mac kinetic scrolling on the touchpad means that you'll get scroll events
+;; even after the user has stopped moving their fingers. To combat this causing
+;; rough scrolls, we block scrolling until no instruction has been received for
+;; 50 ms.
+(defn start-kinetic-scroll!
+  [data]
+  (.setTimeout js/window (fn [_] (swap! data assoc :allow-scroll? true :kinetic-timeout-id nil)) 50))
+
+(defn update-kinetic-scroll!
+  [data]
+  (when-let [timeout-id (:kinetic-timeout-id @data)]
+    (.clearTimeout js/window timeout-id)
+    (swap! data assoc :kinetic-timeout-id (start-kinetic-scroll! data))))
+
+(defn block-scroll!
+  "Block the scroll for t ms."
+  [data t]
+  (let [kinetic-timeout-id (start-kinetic-scroll! data)]
+    (swap! data assoc
+           :in-animation? true
+           :allow-scroll? false
+           :kinetic-timeout-id kinetic-timeout-id))
+  (.setTimeout js/window (fn [_] (swap! data assoc :in-animation? false)) t))
+
 (defn next-section!
   [data]
   (swap! data update :section #(min 4 (inc %))))
@@ -18,12 +42,16 @@
 (defn wheel-handler-fn
   [data]
   (fn [e]
-    (println (.-deltaY e))
-    (cond
-      (> (.-deltaY e) 0)
-      (next-section! data)
-      (< (.-deltaY e) 0)
-      (prev-section! data))))
+    (update-kinetic-scroll! data)
+    (when (and (not (:in-animation? @data)) (:allow-scroll? @data))
+      (cond
+        (> (.-deltaY e) 0)
+        (do
+          (next-section! data)
+          (block-scroll! data 1000))
+        (< (.-deltaY e) 0)
+        (do (prev-section! data)
+            (block-scroll! data 1000))))))
 
 (defn projects-transform
   [height section]
@@ -31,7 +59,7 @@
 
 (defn home
   []
-  (let [data     (r/atom {:section 1})
+  (let [data     (r/atom {:section 1, :in-animation? false, :allow-scroll? true})
         section  (ratom/reaction (:section @data))
         height   (ratom/reaction (:project-height @data))
         wheel-fn (wheel-handler-fn data)]
@@ -42,7 +70,6 @@
          (dommy/listen! js/window :wheel wheel-fn))
        :reagent-render
        (fn []
-         (println @section)
          [:div.wrapper
           [:div.main-left
            [:nav.menu
