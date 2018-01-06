@@ -53,21 +53,28 @@
         (do (prev-section! data)
             (block-scroll! data 1000))))))
 
+(defn resize-handler-fn
+  [data]
+  (fn [_] (swap! data assoc :project-height (:height (dommy/bounding-client-rect (by-id "projects"))))))
+
 (defn projects-transform
   [height section]
   (str "translate3d(0px," (* (- height) (dec section)) "px,0px)"))
 
 (defn home
   []
-  (let [data     (r/atom {:section 1, :in-animation? false, :allow-scroll? true})
-        section  (ratom/reaction (:section @data))
-        height   (ratom/reaction (:project-height @data))
-        wheel-fn (wheel-handler-fn data)]
+  (let [data      (r/atom {:section 1, :in-animation? false, :allow-scroll? true})
+        section   (ratom/reaction (:section @data))
+        height    (ratom/reaction (:project-height @data))
+        wheel-fn  (wheel-handler-fn data)
+        resize-fn (resize-handler-fn data)]
     (r/create-class
       {:component-did-mount
        (fn []
-         (swap! data assoc :project-height (:height (dommy/bounding-client-rect (by-id "projects"))))
-         (dommy/listen! js/window :wheel wheel-fn))
+         ;; On creation, we invoke a resize event to set initial parameters.
+         (resize-fn)
+         (dommy/listen! js/window :wheel wheel-fn)
+         (dommy/listen! js/window :resize resize-fn))
        :reagent-render
        (fn []
          [:div.wrapper
