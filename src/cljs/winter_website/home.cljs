@@ -69,8 +69,8 @@
              :project-height (:height (dommy/bounding-client-rect (by-id "projects")))
              :mobile?        (<= viewport-width mobile-width))
       (if (<= viewport-width mobile-width)
-        (morph! "#bubblePath" {:transform "scale(0.5,0.5) translate(0,-250)"} 0)
-        (morph! "#bubblePath" {:transform "scale(0.95,0.95) translate(0,-180)"} 0)))))
+        (morph! "#bubblePath" {:transform "scale(0.5,0.5) translate(0,-250)"} 1)
+        (morph! "#bubblePath" {:transform "scale(0.95,0.95) translate(0,-180)"} 1)))))
 
 (defn projects-transform
   [height section]
@@ -81,6 +81,14 @@
    :in-animation? false
    :allow-scroll? true
    :article nil})
+
+(defn clipping-path
+  []
+  (fn []
+    [:svg {:width "0%" :height "0%"}
+     [:defs
+      [:clipPath {:id "bubblePath"}
+       [:path {:d "M874.82438,409.605553 C877.675243,542.374587 845.870573,640.169688 775.515049,717.972342 C694.184131,807.912655 518.680572,841.319057 437.349654,835.323036 C222.088118,819.450713 52.0465713,678.432867 31.55118,559.506075 C10.1483069,435.302786 55.5223979,365.920258 84.6303053,247.712989 C109.6203,146.243184 171.637265,68.6889369 306.364071,23.290493 C392.831678,-5.83303706 582.889191,-31.5302695 713.874774,102.951913 C788.151305,179.229865 871.39992,250.282712 874.82438,409.605553 Z"}]]]]))
 
 (defn home
   []
