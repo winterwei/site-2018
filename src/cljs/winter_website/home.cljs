@@ -7,7 +7,8 @@
     [accountant.core :as accountant]
     [dommy.core :as dommy :refer-macros [by-id sel]]))
 
-(def mobile-width 876)
+(def medium-width 876)
+(def small-width 376)
 
 (defn morph!
   [id attrs & [ts]]
@@ -67,9 +68,13 @@
     (let [viewport-width (.-innerWidth js/window)]
       (swap! data assoc
              :project-height (:height (dommy/bounding-client-rect (by-id "projects")))
-             :mobile?        (<= viewport-width mobile-width))
-      (if (<= viewport-width mobile-width)
+             :mobile?        (<= viewport-width medium-width))
+      (cond
+        (<= viewport-width small-width)
         (morph! "#bubblePath" {:transform "scale(0.5,0.5) translate(0,-250)"} 1)
+        (<= viewport-width medium-width)
+        (morph! "#bubblePath" {:transform "scale(0.5,0.5) translate(0,-250)"} 1)
+        :else
         (morph! "#bubblePath" {:transform "scale(0.95,0.95) translate(0,-180)"} 1)))))
 
 (defn projects-transform
