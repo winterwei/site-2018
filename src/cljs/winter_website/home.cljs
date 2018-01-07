@@ -7,6 +7,14 @@
     [accountant.core :as accountant]
     [dommy.core :as dommy :refer-macros [by-id sel]]))
 
+(def mobile-width 876)
+
+(defn morph!
+  [id attrs & [ts]]
+  (-> js/Snap
+      (.select id)
+      (.animate (clj->js attrs) (or ts 2000) (.-easeinout js/mina))))
+
 ;; Mac kinetic scrolling on the touchpad means that you'll get scroll events
 ;; even after the user has stopped moving their fingers. To combat this causing
 ;; rough scrolls, we block scrolling until no instruction has been received for
@@ -55,7 +63,14 @@
 
 (defn resize-handler-fn
   [data]
-  (fn [_] (swap! data assoc :project-height (:height (dommy/bounding-client-rect (by-id "projects"))))))
+  (fn [_]
+    (let [viewport-width (.-innerWidth js/window)]
+      (swap! data assoc
+             :project-height (:height (dommy/bounding-client-rect (by-id "projects")))
+             :mobile?        (<= viewport-width mobile-width))
+      (if (<= viewport-width mobile-width)
+        (morph! "#bubblePath" {:transform "scale(0.5,0.5) translate(0,-250)"} 0)
+        (morph! "#bubblePath" {:transform "scale(0.95,0.95) translate(0,-180)"} 0)))))
 
 (defn projects-transform
   [height section]
@@ -67,18 +82,13 @@
    :allow-scroll? true
    :article nil})
 
-(defn morph!
-  [id attrs & [ts]]
-  (-> js/Snap
-      (.select id)
-      (.animate (clj->js attrs) (or ts 2000) (.-easeinout js/mina))))
-
 (defn home
   []
   (let [data      (r/atom defaults)
         section   (ratom/reaction (:section @data))
         height    (ratom/reaction (:project-height @data))
         article   (ratom/reaction (:article @data))
+        mobile?   (ratom/reaction (:mobile? @data))
         wheel-fn  (wheel-handler-fn data)
         resize-fn (resize-handler-fn data)]
     (r/create-class
@@ -87,8 +97,7 @@
          ;; On creation, we invoke a resize event to set initial parameters.
          (resize-fn)
          (dommy/listen! js/window :wheel wheel-fn)
-         (dommy/listen! js/window :resize resize-fn)
-         (morph! "#bubblePath" {:transform "scale(0.95,0.95) translate(0,-180)"} 0))
+         (dommy/listen! js/window :resize resize-fn))
        :reagent-render
        (fn []
          [:div.wrapper
@@ -115,7 +124,6 @@
                [:a.button {:href ""
                            :on-click (fn [_]
                                        (swap! data assoc :article 1)
-                                       #_(morph! "#bubblePath" {:transform "scale(0.95,0.95) translate(0,-180)"})
                                        (morph! "#bubblePath" {:transform "scale(1.5,1.5) translate(0,-180)"}))}
                 "Read Case Study"]]
               ]
@@ -145,7 +153,10 @@
               ]]]]
 
           [:div.image-wrapper {:class (str "project" @section)
-                               :style {:left (if @article "0" "50%")}}
+                               :style {:left (cond
+                                               @article "0"
+                                               @mobile? "0"
+                                               :else    "50%")}}
            [:img {:src "img/doc-viewer-screen.png"}]]
 
           [:svg {:width "0%" :height "0%"}
