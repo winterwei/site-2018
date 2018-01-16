@@ -39,14 +39,7 @@
 
 (defroutes routes
   (GET "/" [] (loading-page))
-  (GET "/hello" [] (loading-page))
-  (GET "/about" [] (loading-page))
-  (GET "/projects" [] (loading-page))
-  (GET "/contact" [] (loading-page))
-  (POST "/send-message" request
-    (println (:params request))
-    (response/response "success"))
-
+  (GET "/more-than-just-reading-documents" [] (loading-page))
   (resources "/")
   (not-found "Not Found"))
 

@@ -1,24 +1,19 @@
+$mobile: 720px;
+
 #app, .wrapper {
     height:100%;
 }
 
 .wrapper {
-    // @media (max-width: 576px) {
-    //     flex-direction: column-reverse;
-    // }
     display: flex;
     width: 100%;
 }
 
 .main-left {
-    @media (max-width: 876px) {
-        width: 100%;
-    }
-    @media (min-width: 876px) {
+    @media (min-width: $mobile) {
         width: 50%;
     }
-    
-    
+
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -30,18 +25,13 @@
 
 
 .copy {
-@media (min-width: 375px){
-    padding: 240px 24px 0;
-}
-@media (min-width: 720px) {
-    padding: 48px;
-}
-@media (min-width: 1200px) {
-    padding: 72px;
-}
-    
-box-sizing: border-box;
-    // padding: 72px;
+    @media (min-width: 375px){
+        padding: 240px 24px 0;
+    }
+    @media (min-width: $mobile) {
+        padding: 72px;
+    }
+    box-sizing: border-box;
 }
 
 nav {
@@ -61,8 +51,13 @@ nav {
 }
 
 #projects {
+    transition: 1s ease-in-out;
     flex: 1 1 auto;
     overflow:hidden;
+    opacity: 0;
+    &.hidden {
+        opacity:1;
+    }
 }
 
 .autoscroll {
@@ -70,10 +65,15 @@ nav {
 }
 
 .image-wrapper {
+
     position: absolute;
     top:0;
     bottom:0;
     right:0;
+    @media (max-width: $mobile) {
+        top: -50px;
+    }
+
     background: #222244;
     transition: 1s ease-in-out;
     &.project1 {
@@ -88,13 +88,49 @@ nav {
     overflow: hidden;
     clip-path: url(#bubblePath);
     img {
+        position:relative;
         width: 700px;
         padding-top:200px;
+
+        transition: 0.5s ease-in-out;
+        opacity: 1;
+
+
+        @media (max-width: $mobile) {
+            padding-top: 100px;
+            left:-100px;
+            width:500px;
+        }
         // padding-right: 200px;
+        &.hidden {
+            opacity:0;
+        }
     }
     height: 100%;
 }
 
 svg {
     transition: 1s ease-in-out;
+}
+
+.article {
+    position:absolute;
+    transition: 1s ease-in-out;
+    &.normal {
+        top: 20%;
+        opacity:1;
+    }
+    &.below {
+        top: 100%;
+        opacity:0;
+    }
+}
+
+.article-content {
+    margin: 0 auto;
+    width: 70%;
+    h1 {
+        text-align: center;
+        color: #eee;
+    }
 }

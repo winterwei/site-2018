@@ -4,59 +4,36 @@
     [reagent.session :as session]
     [secretary.core :as secretary :include-macros true]
     [accountant.core :as accountant]
-    [winter-website.menu :as menu]
-    [winter-website.main :as main]
-    [winter-website.home :as home]
-    [winter-website.about :as about]
-    [winter-website.projects :as projects]
-    [winter-website.contact :as contact]
-    [winter-website.placeholder :as placeholder]))
+    [winter-website.app :as app]))
 
 (enable-console-print!)
-
-(defn app []
-  (let [page (session/get :page)]
-    [:div.container
-     [:div.menu-icon
-      [:i.material-icons.md-36 {:on-click (fn [_] (session/update! :click-menu not))}
-       (if (session/get :click-menu) "close" "menu")]]
-     [menu/menu page]
-     (case page
-       :about [about/about]
-       :main  [main/main]
-       :projects [projects/projects]
-       :contact [contact/contact])]))
 
 ;; -------------------------
 ;; Routes
 
-(defn current-page []
-  [(session/get :template)])
 
 (secretary/defroute "/" []
-  (session/put! :template #'home/home))
+  (session/put! :article nil)
+  (when-not (session/get :section)
+    (session/put! :section 1))
+  (session/put! :show-article? false))
 
-(secretary/defroute "/hello" []
-  (session/put! :template #'app)
-  (session/put! :page :main))
+(secretary/defroute "/more-than-just-reading-documents" []
+  (session/put! :article 1)
+  (session/put! :section 1)
+  (session/put! :show-article? false))
 
-(secretary/defroute "/about" []
-  (session/put! :template #'app)
-  (session/put! :page :about))
+(secretary/defroute "/more-than-just-reading-foo" []
+  (session/put! :article 2)
+  (session/put! :section 2)
+  (session/put! :show-article? false))
 
-(secretary/defroute "/projects" []
-  (session/put! :template #'app)
-  (session/put! :page :projects))
-
-(secretary/defroute "/contact" []
-  (session/put! :template #'app)
-  (session/put! :page :contact))
 
 ;; -------------------------
 ;; Initialize app
 
 (defn mount-root []
-  (reagent/render [current-page] (.getElementById js/document "app")))
+  (reagent/render [app/app] (.getElementById js/document "app")))
 
 (defn init! []
   (accountant/configure-navigation!
