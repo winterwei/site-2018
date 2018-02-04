@@ -103,7 +103,7 @@
                    :source-paths ["env/dev/clj"]
                    :plugins [[lein-auto "0.1.3"]
                              [lein-figwheel "0.5.14"]
-                             [lein-sassc "0.10.4"]]
+                             [codeboost/lein-sassc "0.10.5"]]
 
                    :auto {"sassc" {:paths ["src/sass"]
                                    :file-pattern  #"\.(scss)$"}}

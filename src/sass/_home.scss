@@ -65,28 +65,43 @@ nav {
 }
 
 .image-wrapper {
-
     position: absolute;
     top:0;
     bottom:0;
     right:0;
+
+    height: 100%;
+    margin: 0 auto;
+    max-width: 75em;
+    overflow: hidden;
+
     @media (max-width: $mobile) {
         top: -50px;
     }
 
-    background: #222244;
     transition: 1s ease-in-out;
-    &.project1 {
+
+    .bubble {
         background: #222244;
+
+        &.project1 {
+            background: #222244;
+        }
+        &.project2 {
+            background: #ffffff;
+        }
+        &.project3 {
+            background: #224422;
+        }
+        overflow: hidden;
+        height:100%;
     }
-    &.project2 {
-        background: #ffffff;
+
+
+    svg {
+        position: absolute;
     }
-    &.project3 {
-        background: #224422;
-    }
-    overflow: hidden;
-    /*clip-path: url(#bubblePath);*/
+
     img {
         position:relative;
         width: 700px;
@@ -101,12 +116,11 @@ nav {
             left:-100px;
             width:500px;
         }
-        // padding-right: 200px;
         &.hidden {
             opacity:0;
         }
     }
-    height: 100%;
+
 }
 
 svg {
@@ -116,6 +130,7 @@ svg {
 .article {
     position:absolute;
     transition: 1s ease-in-out;
+    width: 100%;
     &.normal {
         top: 20%;
         opacity:1;
@@ -128,9 +143,13 @@ svg {
 
 .article-content {
     margin: 0 auto;
-    width: 70%;
+    max-width: 60em;
     h1 {
         text-align: center;
         color: #eee;
+    }
+
+    img {
+        margin-left:100px;
     }
 }

@@ -3,7 +3,7 @@
 (defn article-one
   []
   [:div.article-content
-   [:h1 "More Than Just Reading Documents"]
+   [:h1 "More Than Just" [:br] "Reading Documents"]
    [:div [:img {:src "img/doc-viewer-screen.png"}]]
    [:h2 "Challenge"]
    [:p "Designing the experience of teaching an AI what key clauses look like in contracts for domain
