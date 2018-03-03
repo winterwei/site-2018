@@ -1,4 +1,4 @@
-(ns winter-website.placeholder
+(ns winter-website.playing-cello
   (:require
     [cljsjs.snapsvg]
     [reagent.core :as r]))
@@ -178,9 +178,9 @@
          (.clearInterval js/window @interval1))
        :reagent-render
        (fn []
-         [:div#placeholder
+         [:div#playing-cello
           [:svg#winter-cello
-           {:data-name "Layer 1", :viewBox "0 0 1239 1249"}
+           {:data-name "Layer 1", :viewBox "0 0 2439 2249"}
            [:defs
             [:style
              ".cls-1{fill:url(#linear-gradient);}.cls-2{fill:#a2706d;}.cls-3{fill:#ffead4;}.cls-4{fill:#fff;}.cls-5,.cls-6,.cls-7,.cls-9{fill:none;}.cls-5,.cls-7{stroke:#df6f61;}.cls-5{stroke-linecap:round;stroke-linejoin:round;}.cls-6{stroke:#ffead4;}.cls-6,.cls-7,.cls-9{stroke-miterlimit:10;}.cls-8{fill:#df6f61;}.cls-9{stroke-width:3px;stroke:url(#linear-gradient-2);}.cls-10{fill:#b0b3d6;}"]
@@ -192,7 +192,7 @@
               :gradientUnits "userSpaceOnUse"}
              [:stop {:offset "0", :stop-color "#43445c"}]
              [:stop {:offset "1", :stop-color "#a2706d"}]
-             [:stop {:offset "1"}]]
+             #_[:stop {:offset "1"}]]
             [:linearGradient#shooting-star-grad
              {:x1 "0%",
               :y1 "0%",
@@ -201,7 +201,7 @@
              [:stop {:offset "0%", :stop-color "#fff" :stop-opacity "1"}]
              [:stop {:offset "100%", :stop-color "#fff" :stop-opacity "0"}]]]
            [:title "Artboard 1"]
-           [:circle.cls-1 {:cx "619", :cy "625", :r "607"}]
+           [:circle.cls-1 {:cx "619", :cy "625", :r "2000"}]
            [:path.cls-2
             {:d
              "M648,533s-46.5,22.5-56.5,22.5c-30.92,0-57.12-8.45-74.64-8.54,3.69,11.44,7.14,25.48,7.14,38a189,189,0,0,1-2.3,28c10.44,7.86,27.53,89.15,23.8,111.5-4,24,65,95,90,99s70.66,7,70.66,7Z"}]
@@ -342,23 +342,4 @@
              {:d "M545.5,721.5c16,7,19.5,25.5,25,42,3,9,9,21,10,27s-8,19-9,22"}]
             [:path#arm3..cls-7 {:d "M567.5,768.5c.5,5.5,3,14,3,23s-8,25-7,30"}]
             [:path#arm4.cls-7
-             {:d "M559.5,767.5c1,12,2,16,2,25,0,8.54-10,16-12,23"}]]]
-
-          [:div.placeholder-text
-           [:div
-            [:p "Hi, friend! Thanks for visiting the website of Winter Wei. There's not much to see yet, but it's coming soon. In the meanwhile, find me at these places:"]
-            [:div.social-media
-             [:a {:href "https://www.behance.net/winterwei"}
-              [:img {:src "img/behance.svg"} ]]
-             [:a {:href "https://twitter.com/winterwei"}
-              [:img {:src "img/twitter.svg"} ]
-              ]
-             [:a {:href "https://www.instagram.com/winterweix/"}
-              [:img {:src "img/insta.svg"} ]]
-             [:a {:href "https://github.com/winterwei"}
-              [:img {:src "img/github.svg"} ]]
-
-             ]
-            [:div.paragraph
-             [:p ""]]
-            ]]])})))
+             {:d "M559.5,767.5c1,12,2,16,2,25,0,8.54-10,16-12,23"}]]]])})))

@@ -6,6 +6,7 @@
     [reagent.session :as session]
     [accountant.core :as accountant]
     [dommy.core :as dommy :refer-macros [by-id sel]]
+    [winter-website.playing-cello :as playing-cello]
     [winter-website.article-one :refer [article-one]]
     [winter-website.article-two :refer [article-two]]))
 
@@ -49,7 +50,6 @@
       (fn [x]
         (bezier (t-for-x x) my1 my2)))))
 
-(defn linear [pct] pct)
 (def ease-in (key-spline-fn 0.42 0.0 1.0 1.0))
 (def ease-out (key-spline-fn 0.0 0.0 0.58 1.0))
 (def ease-in-out (key-spline-fn 0.455 0.03 0.515 0.955))
@@ -142,7 +142,7 @@
         (do (prev-section! data)
             (block-scroll! data 1000))))))
 
-(defn bubble-left [viewport-width] (/ (- viewport-width 450) 2))
+(defn bubble-left [viewport-width] (/ (- viewport-width 280) 2))
 
 (defn resize-handler-fn
   [data]
@@ -223,17 +223,17 @@
 
 (defn app
   []
-  (let [init-article (session/get :article)
-        data      (r/atom defaults)
-        section   (ratom/reaction (session/get :section))
-        height    (ratom/reaction (:project-height @data))
-        article   (ratom/reaction (session/get :article))
-        show-article? (ratom/reaction (session/get :show-article?))
-        mobile?   (ratom/reaction (:mobile? @data))
+  (let [init-article   (session/get :article)
+        data           (r/atom defaults)
+        section        (ratom/reaction (session/get :section))
+        height         (ratom/reaction (:project-height @data))
+        article        (ratom/reaction (session/get :article))
+        show-article?  (ratom/reaction (session/get :show-article?))
+        mobile?        (ratom/reaction (:mobile? @data))
         viewport-width (ratom/reaction (:viewport-width @data))
-        bubble-data (ratom/reaction (:bubble @data))
-        wheel-fn  (wheel-handler-fn data)
-        resize-fn (resize-handler-fn data)]
+        bubble-data    (ratom/reaction (:bubble @data))
+        wheel-fn       (wheel-handler-fn data)
+        resize-fn      (resize-handler-fn data)]
     (when init-article
       (set-show-article!))
     (r/create-class
@@ -248,23 +248,22 @@
        (fn []
          [:div.wrapper
           [:div.main-left
-           [:nav.menu
-            [:ul.main-nav
-             [:li
-              [:a {:href "" :on-click (fn [_] (navigate-to-home! data)) } "WW"]]
-             [:li
-              [:a {:href "/work"} "Work"]]
-             [:li
-              [:a {:href "/words"} "Words"]]
-             [:li
-              [:a {:href "/who"} "Who"]]
-             ]]
            [:div#projects {:class (if @article "" "hidden")}
             [:div.autoscroll {:style {:transform (projects-transform @height @section)}}
              [:div.copy {:style {:height @height}}
+                [:div.text
+                 [:h1 "Hello." [:br] "I'm Winter."]
+                 [:h2 "Principal Designer at Kira Systems."]
+                 [:p "This is a paragraph where I talk about how amazing I am, humbly bragging about my achievements and all the blahs. And I'm dreading writing it."]
+                 ]
+                #_[:div.button-wrapper
+                 [:a.button {:href "" :on-click (fn [_] (navigate-to-article! data 1))}
+                  "Read Case Study"]]
+                ]
+             [:div.copy {:style {:height @height}}
               [:div.text
                [:h1 "More Than Just Reading Documents"]
-               [:p "Desining the experience of teaching an AI what key clauses look like in contracts for domain experts by providing a highly interactive interface where reading, evaluating results, annotating texts, and training are easy and intuitive."]
+               [:p "Designing the experience of teaching an AI what key clauses look like in contracts for domain experts by providing a highly interactive interface where reading, evaluating results, annotating texts, and training are easy and intuitive."]
                ]
               [:div.button-wrapper
                [:a.button {:href "" :on-click (fn [_] (navigate-to-article! data 1))}
@@ -273,12 +272,12 @@
              [:div.copy {:style {:height @height}}
               [:div.text
                [:h1 "More Than Just Reading Foo"]
-               [:p "Desining the experience of teaching an AI what key clauses look like in contracts for domain experts by providing a highly interactive interface where reading, evaluating results, annotating texts, and training are easy and intuitive."]
+               [:p "Designing the experience of teaching an AI what key clauses look like in contracts for domain experts by providing a highly interactive interface where reading, evaluating results, annotating texts, and training are easy and intuitive."]
                ]
               [:div.button-wrapper
                [:a.button {:href "" :on-click (fn [_] (navigate-to-article! data 2))} "Read Case Study"]]
               ]
-             [:div#project3.copy {:style {:height @height}}
+             #_[:div#project3.copy {:style {:height @height}}
               [:div.text
                [:h1 "More Than Just Reading Bar"]
                [:p "Desining the experience of teaching an AI what key clauses look like in contracts for domain experts by providing a highly interactive interface where reading, evaluating results, annotating texts, and training are easy and intuitive."]
@@ -286,7 +285,7 @@
               [:div.button-wrapper
                [:a.button {:href ""} "Read Case Study"]]
               ]
-             [:div#project4.copy {:style {:height @height}}
+             #_[:div#project4.copy {:style {:height @height}}
               [:div.text
                [:h1 "More Than Just Reading Baz"]
                [:p "Desining the experience of teaching an AI what key clauses look like in contracts for domain experts by providing a highly interactive interface where reading, evaluating results, annotating texts, and training are easy and intuitive."]
@@ -295,14 +294,16 @@
                [:a.button {:href ""} "Read Case Study"]]
               ]]]]
 
-          [:div.image-wrapper {:class (str "project" @section)
-                               :style {:left (cond
+          [:div.image-wrapper {:style {:left (cond
                                                @article "0"
                                                @mobile? (bubble-left @viewport-width)
                                                :else    "50%")}}
            [bubble-lines @bubble-data]
            [:div.bubble {:style {:clip-path (str "url(#bubblePath" (:scale @bubble-data) ")")}}
-            [:img {:src "img/doc-viewer-screen.png" :class (if @article "hidden")}]
+            [:div.project-image {:class (if (= @section 1) "active" "inactive")}
+             [playing-cello/page]]
+            [:div.project-image {:class (if (= @section 2) "active" "inactive")}
+             [:img {:src "img/doc-viewer-screen.png" :class (if @article "hidden")}]]
             ]]
 
           [bubble @bubble-data]

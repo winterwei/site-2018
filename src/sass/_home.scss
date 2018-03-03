@@ -1,4 +1,5 @@
-$mobile: 720px;
+$wide: 720px;
+$medium: 375px;
 
 #app, .wrapper {
     height:100%;
@@ -10,7 +11,7 @@ $mobile: 720px;
 }
 
 .main-left {
-    @media (min-width: $mobile) {
+    @media (min-width: $wide) {
         width: 50%;
     }
 
@@ -25,10 +26,10 @@ $mobile: 720px;
 
 
 .copy {
-    @media (min-width: 375px){
+    @media (min-width: $medium){
         padding: 240px 24px 0;
     }
-    @media (min-width: $mobile) {
+    @media (min-width: $wide) {
         padding: 72px;
     }
     box-sizing: border-box;
@@ -75,7 +76,7 @@ nav {
     max-width: 75em;
     overflow: hidden;
 
-    @media (max-width: $mobile) {
+    @media (max-width: $wide) {
         top: -50px;
     }
 
@@ -83,16 +84,6 @@ nav {
 
     .bubble {
         background: #222244;
-
-        &.project1 {
-            background: #222244;
-        }
-        &.project2 {
-            background: #ffffff;
-        }
-        &.project3 {
-            background: #224422;
-        }
         overflow: hidden;
         height:100%;
     }
@@ -111,7 +102,7 @@ nav {
         opacity: 1;
 
 
-        @media (max-width: $mobile) {
+        @media (max-width: $wide) {
             padding-top: 100px;
             left:-100px;
             width:500px;
@@ -121,6 +112,28 @@ nav {
         }
     }
 
+}
+
+.project-image {
+    transition: 1s ease-in-out;
+    opacity:0;
+    &.active{
+
+        opacity:1;
+    }
+    position:absolute;
+}
+
+#playing-cello {
+    svg {
+
+        @media (min-width: $wide) {
+            height:1500px;
+        }
+        @media (max-width: $wide) {
+            height:800px;
+        }
+    }
 }
 
 svg {
