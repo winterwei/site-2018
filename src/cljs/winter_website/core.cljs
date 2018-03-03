@@ -20,12 +20,12 @@
 
 (secretary/defroute "/more-than-just-reading-documents" []
   (session/put! :article 1)
-  (session/put! :section 1)
+  (session/put! :section 2)
   (session/put! :show-article? false))
 
 (secretary/defroute "/more-than-just-reading-foo" []
   (session/put! :article 2)
-  (session/put! :section 2)
+  (session/put! :section 3)
   (session/put! :show-article? false))
 
 

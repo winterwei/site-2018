@@ -80,22 +80,6 @@
 (def medium-width 720)
 (def small-width 720)
 
-(defn morph!
-  [id attrs & [ts]]
-  (-> js/Snap
-      (.select id)
-      (.animate (clj->js attrs) (or ts 2000) (.-easeinout js/mina) (fn[_] (println "WTF")))))
-
-(defn morph-bubble!
-  [_ _ old-state new-state]
-  (when old-state
-    (let [scale-factor (/ (:scale new-state) (:scale old-state))
-          transform    (str "scale(" (:scale new-state) "," (:scale new-state) ") translate(0," (:translate-y new-state) ")")]
-      (println (:scale old-state) (:scale new-state) scale-factor (:translate-y new-state) transform)
-      (.log js/console (.select js/Snap "#bubblePath"))
-      (morph! "#bubblePath" {:transform transform} 200)
-      #_(swap! a update :foo not))))
-
 ;; Mac kinetic scrolling on the touchpad means that you'll get scroll events
 ;; even after the user has stopped moving their fingers. To combat this causing
 ;; rough scrolls, we block scrolling until no instruction has been received for
@@ -185,9 +169,13 @@
     1 (accountant/navigate! "/more-than-just-reading-documents")
     2 (accountant/navigate! "/more-than-just-reading-foo")))
 
+(defn animate-to-home!
+  [data]
+  (animate! data [:bubble :scale] home-scale 2000 ease-in-out-back))
+
 (defn navigate-to-home!
   [data]
-  (animate! data [:bubble :scale] home-scale 2000 ease-in-out-back)
+  (animate-to-home! data)
   (accountant/navigate! "/"))
 
 (defn bubble-line
@@ -221,6 +209,14 @@
         [:clipPath {:id (str "bubblePath" (:scale data)) :transform transform}
          [:path {:d "M874.82438,409.605553 C877.675243,542.374587 845.870573,640.169688 775.515049,717.972342 C694.184131,807.912655 518.680572,841.319057 437.349654,835.323036 C222.088118,819.450713 52.0465713,678.432867 31.55118,559.506075 C10.1483069,435.302786 55.5223979,365.920258 84.6303053,247.712989 C109.6203,146.243184 171.637265,68.6889369 306.364071,23.290493 C392.831678,-5.83303706 582.889191,-31.5302695 713.874774,102.951913 C788.151305,179.229865 871.39992,250.282712 874.82438,409.605553 Z"}]]]])))
 
+(defn watch-for-navigation!
+  [state data]
+  (add-watch state :navigate
+             (fn [_ _ old-state new-state]
+               (when (and (not (nil? (:article old-state)))
+                          (nil? (:article new-state)))
+                 (animate-to-home! data)))))
+
 (defn app
   []
   (let [init-article   (session/get :article)
@@ -239,11 +235,11 @@
     (r/create-class
       {:component-did-mount
        (fn []
-         (println "mounted")
          ;; On creation, we invoke a resize event to set initial parameters.
          (resize-fn)
          (dommy/listen! js/window :wheel wheel-fn)
-         (dommy/listen! js/window :resize resize-fn))
+         (dommy/listen! js/window :resize resize-fn)
+         (watch-for-navigation! session/state data))
        :reagent-render
        (fn []
          [:div.wrapper
@@ -253,13 +249,8 @@
              [:div.copy {:style {:height @height}}
                 [:div.text
                  [:h1 "Hello." [:br] "I'm Winter."]
-                 [:h2 "Principal Designer at Kira Systems."]
-                 [:p "This is a paragraph where I talk about how amazing I am, humbly bragging about my achievements and all the blahs. And I'm dreading writing it."]
-                 ]
-                #_[:div.button-wrapper
-                 [:a.button {:href "" :on-click (fn [_] (navigate-to-article! data 1))}
-                  "Read Case Study"]]
-                ]
+                 [:p "I’m passionate about making products that enable people to be their better selves. Currently serving as the Principal Designer at Kira Systems, I lead the design of an award-winning Machine Learning based product that helps domain experts manage the complexities when analyzing large volumes of documents."]
+                 ]]
              [:div.copy {:style {:height @height}}
               [:div.text
                [:h1 "More Than Just Reading Documents"]
