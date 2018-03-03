@@ -23,7 +23,7 @@
   (session/put! :section 2)
   (session/put! :show-article? false))
 
-(secretary/defroute "/more-than-just-reading-foo" []
+(secretary/defroute "/beautifully-mindful" []
   (session/put! :article 2)
   (session/put! :section 3)
   (session/put! :show-article? false))

@@ -27,10 +27,11 @@ $medium: 375px;
 
 .copy {
     @media (min-width: $medium){
-        padding: 240px 24px 0;
+        padding: 280px 24px 0;
     }
     @media (min-width: $wide) {
         padding: 72px;
+        padding-top:100px;
     }
     box-sizing: border-box;
 }
@@ -83,33 +84,18 @@ nav {
     transition: 1s ease-in-out;
 
     .bubble {
-        background: #222244;
         overflow: hidden;
         height:100%;
-    }
+        transition: 1s ease-in-out;
 
+        &.project1 {
+
+            background: #2d3335;
+        }
+    }
 
     svg {
         position: absolute;
-    }
-
-    img {
-        position:relative;
-        width: 700px;
-        padding-top:200px;
-
-        transition: 0.5s ease-in-out;
-        opacity: 1;
-
-
-        @media (max-width: $wide) {
-            padding-top: 100px;
-            left:-100px;
-            width:500px;
-        }
-        &.hidden {
-            opacity:0;
-        }
     }
 
 }
@@ -118,11 +104,45 @@ nav {
     transition: 1s ease-in-out;
     opacity:0;
     &.active{
-
         opacity:1;
     }
     position:absolute;
 }
+
+.article-headline {
+    img {
+        position:relative;
+        transition: 0.5s ease-in-out;
+        opacity: 1;
+    }
+
+    &.article-one {
+        img {
+            width: 700px;
+            padding-top:200px;
+            @media (max-width: $wide) {
+                padding-top: 100px;
+                left:-100px;
+                width:500px;
+            }
+        }
+    }
+
+    &.article-two {
+        img {
+            width: 550px;
+            padding-top:120px;
+            left:-50px;
+            @media (max-width: $wide) {
+                padding-top: 50px;
+                left:0px;
+                width:300px;
+            }
+        }
+    }
+
+}
+
 
 #playing-cello {
     svg {
@@ -159,10 +179,21 @@ svg {
     max-width: 60em;
     h1 {
         text-align: center;
-        color: #eee;
     }
 
     img {
         margin-left:100px;
+    }
+
+    &.article-one {
+        h1 {
+            color: #eee;
+        }
+    }
+
+    &.article-two {
+        h1 {
+            color: #111;
+        }
     }
 }

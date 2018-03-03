@@ -40,6 +40,7 @@
 (defroutes routes
   (GET "/" [] (loading-page))
   (GET "/more-than-just-reading-documents" [] (loading-page))
+  (GET "/beautifully-mindful" [] (loading-page))
   (resources "/")
   (not-found "Not Found"))
 

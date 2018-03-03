@@ -7,12 +7,14 @@
     [accountant.core :as accountant]
     [dommy.core :as dommy :refer-macros [by-id sel]]
     [winter-website.playing-cello :as playing-cello]
-    [winter-website.article-one :refer [article-one]]
-    [winter-website.article-two :refer [article-two]]))
+    [winter-website.article-one :refer [article-one image-one]]
+    [winter-website.article-two :refer [article-two image-two]]))
 
 
 (def article-scale 1.2)
+(def article-scale-mobile 0.8)
 (def home-scale 0.95)
+(def home-scale-mobile 0.5)
 
 ;; Cubic spline computations Inspired by
 ;; http://greweb.me/2012/02/bezier-curve-based-easing-functions-from-concept-to-implementation/
@@ -106,7 +108,7 @@
 
 (defn next-section!
   [data]
-  (session/update! :section #(min 4 (inc %))))
+  (session/update! :section #(min 3 (inc %))))
 
 (defn prev-section!
   [data]
@@ -131,19 +133,25 @@
 (defn resize-handler-fn
   [data]
   (fn [_]
-    (let [viewport-width (.-innerWidth js/window)]
+    (let [viewport-width (.-innerWidth js/window)
+          mobile?        (<= viewport-width medium-width)]
       (swap! data assoc
              :viewport-width viewport-width
              :viewport-height (.-innerHeight js/window)
              :project-height (:height (dommy/bounding-client-rect (by-id "projects")))
-             :mobile?        (<= viewport-width medium-width))
+             :mobile?        mobile?)
       (cond
-        (<= viewport-width small-width)
-        (swap! data assoc-in [:bubble :scale] 0.5)
+        (and (session/get :article) mobile?)
+        (swap! data assoc-in [:bubble :scale] article-scale-mobile)
+
+        (session/get :article)
+        (swap! data assoc-in [:bubble :scale] article-scale)
+
+        mobile?
+        (swap! data assoc-in [:bubble :scale] home-scale-mobile)
+
         :else
-        (if (session/get :article)
-          (swap! data assoc-in [:bubble :scale] article-scale)
-          (swap! data assoc-in [:bubble :scale] home-scale))))))
+        (swap! data assoc-in [:bubble :scale] home-scale)))))
 
 (defn projects-transform
   [height section]
@@ -163,15 +171,18 @@
 
 (defn navigate-to-article!
   [data article-number]
-  (animate! data [:bubble :scale] article-scale 2000 ease-in-out-back)
+  (let [scale (if (:mobile? @data) article-scale-mobile article-scale)]
+    (animate! data [:bubble :scale] scale 2000 ease-in-out-back))
   (set-show-article!)
   (case article-number
     1 (accountant/navigate! "/more-than-just-reading-documents")
-    2 (accountant/navigate! "/more-than-just-reading-foo")))
+    2 (accountant/navigate! "/beautifully-mindful")))
 
 (defn animate-to-home!
   [data]
-  (animate! data [:bubble :scale] home-scale 2000 ease-in-out-back))
+  (println (:mobile? @data))
+  (let [scale (if (:mobile? @data) home-scale-mobile home-scale)]
+    (animate! data [:bubble :scale] scale 2000 ease-in-out-back)))
 
 (defn navigate-to-home!
   [data]
@@ -188,7 +199,7 @@
   [_]
   (fn [data]
     (let [scale (str "scale(" (:scale data) "," (:scale data) ")")]
-      [:svg {:width "835px" :height "822px" :viewBox "0 0 835 822"}
+      [:svg {:width "1835px" :height "822px" :viewBox "0 0 1835 822"}
        [:defs
         [:linearGradient
          {:id "lineGradient" :x1 "56273.0023%" :y1 "26745.9004%" :x2 "41362.4259%" :y2 "111950%"}
@@ -262,27 +273,11 @@
               ]
              [:div.copy {:style {:height @height}}
               [:div.text
-               [:h1 "More Than Just Reading Foo"]
-               [:p "Designing the experience of teaching an AI what key clauses look like in contracts for domain experts by providing a highly interactive interface where reading, evaluating results, annotating texts, and training are easy and intuitive."]
+               [:h1 "Beautifully Mindful"]
+               [:p "A hand-crafted logo combining customized type and illustrations of lots of natural goodies, for the fun-loving, free-spirited, health and environmentally conscious."]
                ]
               [:div.button-wrapper
                [:a.button {:href "" :on-click (fn [_] (navigate-to-article! data 2))} "Read Case Study"]]
-              ]
-             #_[:div#project3.copy {:style {:height @height}}
-              [:div.text
-               [:h1 "More Than Just Reading Bar"]
-               [:p "Desining the experience of teaching an AI what key clauses look like in contracts for domain experts by providing a highly interactive interface where reading, evaluating results, annotating texts, and training are easy and intuitive."]
-               ]
-              [:div.button-wrapper
-               [:a.button {:href ""} "Read Case Study"]]
-              ]
-             #_[:div#project4.copy {:style {:height @height}}
-              [:div.text
-               [:h1 "More Than Just Reading Baz"]
-               [:p "Desining the experience of teaching an AI what key clauses look like in contracts for domain experts by providing a highly interactive interface where reading, evaluating results, annotating texts, and training are easy and intuitive."]
-               ]
-              [:div.button-wrapper
-               [:a.button {:href ""} "Read Case Study"]]
               ]]]]
 
           [:div.image-wrapper {:style {:left (cond
@@ -290,11 +285,14 @@
                                                @mobile? (bubble-left @viewport-width)
                                                :else    "50%")}}
            [bubble-lines @bubble-data]
-           [:div.bubble {:style {:clip-path (str "url(#bubblePath" (:scale @bubble-data) ")")}}
+           [:div.bubble {:style {:clip-path (str "url(#bubblePath" (:scale @bubble-data) ")")}
+                         :class (str "project" (dec @section))}
             [:div.project-image {:class (if (= @section 1) "active" "inactive")}
              [playing-cello/page]]
-            [:div.project-image {:class (if (= @section 2) "active" "inactive")}
-             [:img {:src "img/doc-viewer-screen.png" :class (if @article "hidden")}]]
+            [:div.project-image.project1 {:class (if (and (= @section 2) (not @article)) "active" "inactive")}
+             [image-one]]
+            [:div.project-image.project1 {:class (if (and (= @section 3) (not @article)) "active" "inactive")}
+             [image-two]]
             ]]
 
           [bubble @bubble-data]
